@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinner Reservation</title>
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            margin-left: 10%;
+            margin-right: 50%;
+        }
+
+        table {
+            text-align: center;
+        }
+
+        input, button {
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .error {
+            color: red;
+            margin-top: 5px;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: center;
+            flex-direction: column; /* Adjusted to display items in a column */
+            align-items: center; /* Center items horizontally */
+        }
+
+        .form-item {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Booking your place for your dinner!</h1>
+
+        <div class="form-row">
+            <div class="form-item">
+                <label for="name">Name:</label>
+                <input type="text" id="name" size="22">
+                <div id="name-error" class="error"></div>
+            </div>
+            <div class="form-item">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" size="22">
+                <div id="phone-error" class="error"></div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2>Select a time</h2>
+            <input type="radio" id="first" name="seating" value="5" checked>
+            <label for="first">5:00</label><br>
+            <input type="radio" id="second" name="seating" value="6">
+            <label for="second">6:00</label><br>
+            <input type="radio" id="third" name="seating" value="7">
+            <label for="third">7:00</label><br>
+            <input type="radio" id="fourth" name="seating" value="8">
+            <label for="fourth">8:00</label><br>
+            <br>
+            <h2>What would you like to have with us?</h2>
+            <input type="checkbox" id="starters" name="items" value="starters">
+            <label for="starters">Starters</label><br>
+            <input type="checkbox" id="main" name="items" value="main">
+            <label for="main">Main Course</label><br>
+            <input type="checkbox" id="dessert" name="items" value="dessert">
+            <label for="dessert">Dessert</label><br>
+            <input type="checkbox" id="drinks" name="items" value="drinks">
+            <label for="drinks">Drinks</label><br>
+        </div>
+
+        <div class="form-row">
+            <button type="button" onclick="submitForm()" id="submit">Submit</button>
+        </div>
+
+        <div id="error-container" class="error"></div>
+
+        <script>
+            function validateName() {
+                var nameInput = document.getElementById("name");
+                var nameValue = nameInput.value.trim();
+
+                if (nameValue === "") {
+                    return "Name is empty";
+                } else if (!nameValue.includes(" ")) {
+                    return "First and last name required";
+                } else {
+                    return "";
+                }
+            }
+
+            function validatePhoneNumber() {
+                var phoneInput = document.getElementById("phone");
+                var phoneValue = phoneInput.value.trim();
+
+                if (phoneValue === "") {
+                    return "Phone number is empty";
+                } else if (phoneValue.length !== 6 || isNaN(phoneValue)) {
+                    return "Phone number must have exactly 6 numeric characters";
+                } else {
+                    return "";
+                }
+            }
+
+            function showError(element, message) {
+                element.classList.add("error");
+                document.getElementById(element.id + "-error").innerText = message;
+            }
+
+            function hideError(element) {
+                element.classList.remove("error");
+                document.getElementById(element.id + "-error").innerText = "";
+            }
+
+            function submitForm() {
+                var nameError = validateName();
+                var phoneError = validatePhoneNumber();
+
+                var nameInput = document.getElementById("name");
+                var phoneInput = document.getElementById("phone");
+                var errorContainer = document.getElementById("error-container");
+
+                if (errorContainer) {
+                    errorContainer.innerText = ""; // Clear existing error messages
+                } else {
+                    errorContainer = document.createElement("div");
+                    errorContainer.id = "error-container";
+                    errorContainer.className = "error";
+                }
+
+                if (nameError !== "") {
+                    showError(nameInput, nameError);
+                    errorContainer.innerText = nameError;
+                } else {
+                    hideError(nameInput);
+                }
+
+                if (phoneError !== "") {
+                    showError(phoneInput, phoneError);
+                    errorContainer.innerText = phoneError;
+                } else {
+                    hideError(phoneInput);
+                }
+
+                var submitButton = document.getElementById("submit");
+                submitButton.parentNode.insertBefore(errorContainer, submitButton.nextSibling);
+            }
+        </script>
+    </body>
+</html>
